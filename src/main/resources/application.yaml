@@ -1,1 +1,15 @@
-spring.application.name=Todo-List
+spring:
+  application:
+    name: Todo-List
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: 011128
+    url: jdbc:postgresql://localhost:5432/mydb
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: 8000
