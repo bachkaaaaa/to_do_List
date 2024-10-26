@@ -1,6 +1,5 @@
 provider "aws" {
-  access_key = "aws_access_key_id"
-  secret_key = "aws_secret_access_key"
+  profile= "default"
   region = "eu-west-3"  # Replace with your preferred region
 }
 
