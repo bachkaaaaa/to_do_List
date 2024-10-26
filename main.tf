@@ -1,4 +1,6 @@
 provider "aws" {
+  access_key = "your_access_key_id"
+  secret_key = "your_secret_access_key"
   region = "eu-west-3"  # Replace with your preferred region
 }
 
@@ -127,6 +129,7 @@ resource "aws_instance" "app_instance" {
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public_subnet.id
   security_groups = [aws_security_group.ec2_security_group.name]
+    iam_instance_profile = data.aws_iam_role.ec2_role.name
 
   tags = {
     Name = "springboot-app"
@@ -159,8 +162,13 @@ resource "aws_db_subnet_group" "main" {
     Name = "main_subnet_group"
   }
 }
+
+
 output "db_endpoint" {
   value       = aws_db_instance.postgresql.endpoint
   description = "The endpoint of the RDS instance"
 }
 
+data "aws_iam_role" "ec2_role" {
+  name = "forEC2"
+}
