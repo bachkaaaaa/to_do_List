@@ -138,7 +138,7 @@ resource "aws_instance" "app_instance" {
  ami           ="ami-0f209d0bb2c44ea6c"
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public_subnet.id
-  security_groups = [aws_security_group.ec2_security_group.name]
+  vpc_security_group_ids = [aws_security_group.ec2_security_group.id]
     iam_instance_profile = data.aws_iam_role.ec2_role.name
 
   tags = {
