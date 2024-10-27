@@ -172,6 +172,9 @@ resource "aws_db_instance" "postgresql" {
   tags = {
     Name = "rds_postgresql"
   }
+ lifecycle {
+    prevent_destroy = true
+  }
 }
 #rds used so the same instance can be used in different subnets
 resource "aws_db_subnet_group" "main" {
