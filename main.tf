@@ -158,7 +158,7 @@ resource "aws_instance" "app_instance" {
 #creation rds(relational DB service)instance 
 resource "aws_db_instance" "postgresql" {
   engine            = "postgres"
-  instance_class    = "db.t2.micro"
+  instance_class    = "db.t3.micro"
   allocated_storage = 20
   username          = "admin"
   password          = "admin_password"
