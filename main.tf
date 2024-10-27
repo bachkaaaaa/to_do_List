@@ -27,7 +27,7 @@ resource "aws_subnet" "private_subnetA" {
 
 
   tags = {
-    Name = "private"
+    Name = "privateA"
   }
 }
 resource "aws_subnet" "private_subnetB" {
@@ -37,7 +37,7 @@ resource "aws_subnet" "private_subnetB" {
 
 
   tags = {
-    Name = "private"
+    Name = "privateB"
   }
 }
 
