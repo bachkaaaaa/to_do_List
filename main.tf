@@ -17,9 +17,21 @@ resource "aws_subnet" "public_subnet" {
 }
 
 #"Private" subnet creation
-resource "aws_subnet" "private_subnet" {
+resource "aws_subnet" "private_subnetA" {
   vpc_id     = aws_vpc.main.id
   cidr_block = "10.0.2.0/24"
+  availability_zone = "eu-west-3a" 
+
+
+  tags = {
+    Name = "private"
+  }
+}
+resource "aws_subnet" "private_subnetB" {
+  vpc_id     = aws_vpc.main.id
+  cidr_block = "10.0.3.0/24"
+  availability_zone = "eu-west-3b" 
+
 
   tags = {
     Name = "private"
@@ -154,7 +166,7 @@ resource "aws_db_instance" "postgresql" {
 #rds used so the same instance can be used in different subnets
 resource "aws_db_subnet_group" "main" {
   name       = "main_subnet_group"
-  subnet_ids = [aws_subnet.private_subnet.id]
+  subnet_ids = [aws_subnet.private_subnetA.id,aws_subnet.private_subnetB.id]
 
   tags = {
     Name = "main_subnet_group"
