@@ -117,6 +117,9 @@ resource "aws_security_group" "rds_security_group" {
 #"Public"subnet Config
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
+tags = {
+    Name = "gateway"
+  }
 }
 
 
@@ -127,6 +130,10 @@ resource "aws_route_table" "public_route_table" {
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
+  }
+
+tags = {
+    Name = "route Table"
   }
 }
 
