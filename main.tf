@@ -160,8 +160,8 @@ resource "aws_db_instance" "postgresql" {
   engine            = "postgres"
   instance_class    = "db.t3.micro"
   allocated_storage = 20
-  username          = "admin"
-  password          = "admin_password"
+  username          = "bachka"
+  password          = "bachka"
   db_name	    = "mydb"
   multi_az          = true
   storage_encrypted = false
