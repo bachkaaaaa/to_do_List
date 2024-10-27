@@ -1,11 +1,13 @@
 provider "aws" {
-  profile= "profile1"
   region = "eu-west-3"  # Replace with your preferred region
 }
 
 
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
+ tags = {
+    Name = "MyVPC" 
+  }
 }
  #"Public" subnet creation
 resource "aws_subnet" "public_subnet" {
@@ -18,12 +20,24 @@ resource "aws_subnet" "public_subnet" {
 }
 
 #"Private" subnet creation
-resource "aws_subnet" "private_subnet" {
+resource "aws_subnet" "private_subnetA" {
   vpc_id     = aws_vpc.main.id
   cidr_block = "10.0.2.0/24"
+  availability_zone = "eu-west-3a" 
+
 
   tags = {
-    Name = "private"
+    Name = "privateA"
+  }
+}
+resource "aws_subnet" "private_subnetB" {
+  vpc_id     = aws_vpc.main.id
+  cidr_block = "10.0.3.0/24"
+  availability_zone = "eu-west-3b" 
+
+
+  tags = {
+    Name = "privateB"
   }
 }
 
@@ -103,6 +117,9 @@ resource "aws_security_group" "rds_security_group" {
 #"Public"subnet Config
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
+tags = {
+    Name = "gateway"
+  }
 }
 
 
@@ -113,6 +130,10 @@ resource "aws_route_table" "public_route_table" {
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
+  }
+
+tags = {
+    Name = "route Table"
   }
 }
 
@@ -127,7 +148,7 @@ resource "aws_instance" "app_instance" {
  ami           ="ami-0f209d0bb2c44ea6c"
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public_subnet.id
-  security_groups = [aws_security_group.ec2_security_group.name]
+  vpc_security_group_ids = [aws_security_group.ec2_security_group.id]
     iam_instance_profile = data.aws_iam_role.ec2_role.name
 
   tags = {
@@ -137,13 +158,13 @@ resource "aws_instance" "app_instance" {
 #creation rds(relational DB service)instance 
 resource "aws_db_instance" "postgresql" {
   engine            = "postgres"
-  instance_class    = "db.t2.micro"
+  instance_class    = "db.t3.micro"
   allocated_storage = 20
-  username          = "admin"
-  password          = "admin_password"
+  username          = "bachka"
+  password          = "bachka1234"
   db_name	    = "mydb"
   multi_az          = true
-  storage_encrypted = true
+  storage_encrypted = false
   db_subnet_group_name = aws_db_subnet_group.main.id
 
   vpc_security_group_ids = [aws_security_group.rds_security_group.id]
@@ -151,11 +172,14 @@ resource "aws_db_instance" "postgresql" {
   tags = {
     Name = "rds_postgresql"
   }
+ lifecycle {
+    prevent_destroy = true
+  }
 }
 #rds used so the same instance can be used in different subnets
 resource "aws_db_subnet_group" "main" {
   name       = "main_subnet_group"
-  subnet_ids = [aws_subnet.private_subnet.id]
+  subnet_ids = [aws_subnet.private_subnetA.id,aws_subnet.private_subnetB.id]
 
   tags = {
     Name = "main_subnet_group"
