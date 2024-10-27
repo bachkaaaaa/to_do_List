@@ -1,5 +1,4 @@
 provider "aws" {
-  profile= "profile1"
   region = "eu-west-3"  # Replace with your preferred region
 }
 
