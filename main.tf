@@ -157,7 +157,7 @@ resource "aws_db_instance" "postgresql" {
   password          = "admin_password"
   db_name	    = "mydb"
   multi_az          = true
-  storage_encrypted = true
+  storage_encrypted = false
   db_subnet_group_name = aws_db_subnet_group.main.id
 
   vpc_security_group_ids = [aws_security_group.rds_security_group.id]
