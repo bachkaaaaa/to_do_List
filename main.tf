@@ -151,6 +151,7 @@ resource "aws_instance" "app_instance" {
  
  ami           ="ami-0f209d0bb2c44ea6c"
   instance_type = "t2.micro"
+  associate_public_ip_address = true
   subnet_id     = aws_subnet.public_subnet.id
   vpc_security_group_ids = [aws_security_group.ec2_security_group.id]
    key_name      = aws_key_pair.my_key.key_name	 
