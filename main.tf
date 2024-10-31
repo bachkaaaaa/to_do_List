@@ -184,6 +184,7 @@ resource "aws_db_instance" "postgresql" {
 #rds used so the same instance can be used in different subnets
 resource "aws_db_subnet_group" "main" {
   name       = "main_subnet_group"
+  vpc_id     = aws_vpc.main.id
   subnet_ids = [aws_subnet.private_subnetA.id,aws_subnet.private_subnetB.id]
 
   tags = {
