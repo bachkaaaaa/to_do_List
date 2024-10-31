@@ -141,7 +141,11 @@ resource "aws_route_table_association" "public_route" {
   subnet_id      = aws_subnet.public_subnet.id
   route_table_id = aws_route_table.public_route_table.id
 }
-
+#pairing
+resource "aws_key_pair" "my_key" {
+  key_name   = "my-terraform-key"  # Change to your preferred key name
+  public_key = file("~/.ssh/id_rsa.pub")  # Path to your existing public key
+}
 #creation of ec2 for spring project
 resource "aws_instance" "app_instance" {
  
@@ -149,7 +153,8 @@ resource "aws_instance" "app_instance" {
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public_subnet.id
   vpc_security_group_ids = [aws_security_group.ec2_security_group.id]
-    iam_instance_profile = data.aws_iam_role.ec2_role.name
+   key_name      = aws_key_pair.my_key.key_name	 
+   iam_instance_profile = data.aws_iam_role.ec2_role.name
 
   tags = {
     Name = "springboot-app"
@@ -195,3 +200,8 @@ output "db_endpoint" {
 data "aws_iam_role" "ec2_role" {
   name = "forEC2"
 }
+output "public_ip" {
+  value       = aws_instance.app_instance.public_ip
+  description = "The public ip for the instance"
+}
+

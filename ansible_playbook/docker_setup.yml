@@ -1,0 +1,34 @@
+---
+- name: Ensure Docker is installed and run the Docker container
+  hosts: aws_instances
+  become: yes
+  vars:
+    docker_image: "bachka512/todo-list-app"
+    docker_tag: "{{ lookup('env', 'BUILD_NUMBER') }}"
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Pull the Docker image
+      docker_image:
+        name: "{{ docker_image }}"
+        tag: "{{ docker_tag }}"
+        source: pull
+
+    - name: Run the Docker container
+      docker_container:
+        name: todo-list-app
+        image: "{{ docker_image }}:{{ docker_tag }}"
+        state: started
+        restart_policy: always
+        ports:
+          - "8080:8080"  # Adjust as needed
