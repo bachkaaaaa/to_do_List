@@ -144,7 +144,7 @@ resource "aws_route_table_association" "public_route" {
 #pairing
 resource "aws_key_pair" "my_key" {
   key_name   = "my-terraform-key"  # Change to your preferred key name
-  public_key = file("~/.ssh/id_rsa.pub")  # Path to your existing public key
+  public_key = file("/home/bachka/.ssh/id_rsa.pub")  # Path to your existing public key
 }
 #creation of ec2 for spring project
 resource "aws_instance" "app_instance" {
