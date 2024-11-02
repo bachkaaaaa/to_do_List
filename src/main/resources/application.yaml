@@ -3,8 +3,8 @@ spring:
     name: Todo-List
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: 011128
+    username: bachka
+    password: bachka1234
     url: jdbc:postgresql://localhost:5432/mydb
   jpa:
     hibernate:
