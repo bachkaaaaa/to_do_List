@@ -20,11 +20,6 @@
         state: present
         update_cache: yes
 
-    - name: Install Docker
-      apt:
-        name: docker.io
-        state: present
-      when: ansible_os_family == "Debian"
 
     - name: Start Docker service
       service:
@@ -35,7 +30,7 @@
     - name: Pull the Docker image
       docker_image:
         name: "{{ docker_image }}"
-        tag: "{{ docker_tag }}"
+        tag: "{{docker_tag}}"
         source: pull
 
     - name: Run the Docker container
@@ -45,4 +40,4 @@
         state: started
         restart_policy: always
         ports:
-          - "8080:8080"  # Adjust as needed
+          - "8080:7000"  # Adjust as needed
