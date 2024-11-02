@@ -35,13 +35,13 @@
     - name: Pull the Docker image
       docker_image:
         name: "{{ docker_image }}"
-        tag: latest
+        tag: "{{ docker_tag }}"
         source: pull
 
     - name: Run the Docker container
       docker_container:
         name: todo-list-app
-        image: "{{ docker_image }}:latest"
+        image: "{{ docker_image }}:{{ docker_tag }}"
         state: started
         restart_policy: always
         ports:
