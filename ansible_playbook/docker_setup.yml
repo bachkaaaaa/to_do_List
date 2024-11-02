@@ -6,6 +6,20 @@
     docker_image: "bachka512/todo-list-app"
     docker_tag: "{{ lookup('env', 'BUILD_NUMBER') }}"
   tasks:
+    - name: Update the APT package index
+      apt:
+        update_cache: yes
+
+    - name: Upgrade all packages to the latest version
+      apt:
+        upgrade: dist
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
     - name: Install Docker
       apt:
         name: docker.io
