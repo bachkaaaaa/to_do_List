@@ -101,7 +101,7 @@ script {
         stage('Deploy with Ansible') {
             steps {
                 // Run the Ansible playbook using the SSH key stored in the file
-sh "ansible-playbook -i inventory.ini ./ansible_playbook/docker_setup.yml --private-key=/home/bachka/.ssh/id_rsa"
+sh "ansible-playbook -i inventory.ini ./ansible/docker_setup.yml --private-key=/home/bachka/.ssh/id_rsa"
             }
         }
     }
